@@ -10,9 +10,8 @@ export enum TRANSACTION_TYPES {
 
 @ObjectType()
 export class Transactions {
-  @Field(() => GraphQLString, { description: "Transaction Identifier" })
-  @Prop({ required: true, type: SchemaTypes.ObjectId })
-  id: string;
+  @Field(() => GraphQLString, { description: "Unique Identifier" })
+  readonly _id: string;
 
   @Field(() => GraphQLString, { description: "Transaction type or category " })
   @Prop({ required: true, type: Number, enum: TRANSACTION_TYPES })

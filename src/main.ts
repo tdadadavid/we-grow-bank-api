@@ -14,3 +14,5 @@ async function bootstrap() {
   await app.listen(3000);
 }
 bootstrap();
+
+//TODO: work on the error handling.

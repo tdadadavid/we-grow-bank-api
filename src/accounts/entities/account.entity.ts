@@ -19,7 +19,7 @@ export class Account {
 
   @Field(() => GraphQLString, { description: "Account Holder" })
   @Prop({ required: true, type: () => String, ref: () => User })
-  owner: Ref<User, string>;
+  owner: Ref<User>;
 
   @Field(() => GraphQLString, { description: "Account currency" })
   @Prop({ required: true, type: String })
