@@ -1,0 +1,32 @@
+
+
+  * Simple Bank Thought Flow
+  * Users
+    -> firstname
+    -> lastname
+    -> email
+    -> password
+    -> phoneNumber (which will be used for account Number)
+
+  * Account
+    -> accountNumber
+    -> balance
+    -> ownerAccount.
+    -> currency.
+
+
+  * Deposits
+    -> amount
+    -> destinationAccount
+    -> timeStamps
+
+  * Withdrawals
+    -> amount
+    -> sourceAccount
+    -> timeStamps
+
+  * Transactions
+    -> id
+    -> timeStamps
+    -> typeOfTransaction
+    -> transactionStatus

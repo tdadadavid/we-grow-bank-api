@@ -1,0 +1,35 @@
+version: '3.0'
+services:
+  mongoDb:
+    image: mongo:latest
+    container_name: mongo-service
+    restart: always
+    command: [ --auth ]
+    environment:
+        MONGO_INITDB_ROOT_USERNAME: root
+        MONGO_INITDB_ROOT_PASSWORD: rootpassword
+    ports:
+      - 8040:27017
+    volumes:
+      - mongodb_data_container:/data/db
+
+  mongo-express:
+    image: mongo-express
+    container_name: mongo-workbench
+
+
+  bankApi:
+    container_name: we-grow-bank-service
+    restart: always
+    env_file:
+      - ./.env
+    ports:
+      - 3000:3000
+    depends_on:
+      - mongoDb
+
+volumes:
+  mongodb_data_container:
+
+
+# TODO finish the dockerized process.

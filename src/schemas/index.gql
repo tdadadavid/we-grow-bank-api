@@ -1,0 +1,217 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type APIStatus {
+  """Any message"""
+  message: String!
+
+  """The status of the api"""
+  status: String!
+
+  """The version of the api """
+  version: String!
+}
+
+type AccountResponse {
+  """Account id"""
+  _id: String
+
+  """Account number"""
+  accountNumber: String
+
+  """Account balance"""
+  balance: String
+
+  """Time account was created"""
+  createdAt: DateTime
+
+  """Account currency"""
+  currency: String
+
+  """Account Holder"""
+  owner: String
+}
+
+type Auth {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input CreateUserDto {
+  currency: String!
+  email: String!
+  firstname: String!
+  lastname: String!
+  password: String!
+  phoneNumber: String!
+}
+
+type CreateUserResponseDto {
+  """Response Information"""
+  data: UserAuthCreationDto!
+
+  """Any message"""
+  message: String!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type DepositResponse {
+  """Amount deposited to an account"""
+  amountDeposited: String
+
+  """Transaction time """
+  createdAt: String
+
+  """Account to be credited"""
+  destinationAccount: String
+
+  """Deposit Identified """
+  id: String
+
+  """Account to be credited"""
+  sourceAccount: String
+}
+
+type DepositResponseDto {
+  """The transaction"""
+  data: DepositResponse!
+
+  """Response message"""
+  message: String!
+}
+
+input LogOutDto {
+  """Token to revoke"""
+  token: String!
+}
+
+type LoginResponseDto {
+  """Any relevant information"""
+  data: ResponseDataDto!
+
+  """Login message"""
+  message: String!
+}
+
+input MakeDepositDto {
+  """Amount to be deposited"""
+  amount: String!
+
+  """Destination account"""
+  destinationAccount: String!
+
+  """Source Account"""
+  sourceAccount: String!
+}
+
+type Mutation {
+  createUser(signUp: CreateUserDto!): CreateUserResponseDto!
+  logOut(logOut: LogOutDto!): Auth!
+  loginUser(signIn: UserLoginDto!): LoginResponseDto!
+  makeDeposit(makeDeposit: MakeDepositDto!): DepositResponseDto!
+  refreshToken(refreshToken: RefreshTokenDto!): Auth!
+  removeUser(id: Int!): User!
+  updateUser(updateUserInput: UpdateUserInput!): User!
+}
+
+type Query {
+  getHello: APIStatus!
+  user(id: Int!): User!
+  users: [User!]!
+}
+
+input RefreshTokenDto {
+  """Refresh token from the client """
+  token: String!
+}
+
+type ResponseDataDto {
+  """All tokens """
+  tokens: TokenResponseDto!
+
+  """User details """
+  user: UserResponseDto!
+}
+
+type TokenResponseDto {
+  """Access token """
+  accessToken: String!
+
+  """Access token life span"""
+  accessTokenExpiresAt: String!
+
+  """Refresh token"""
+  refreshToken: String!
+
+  """Refresh token life span """
+  refreshTokenExpiresAt: String!
+}
+
+input UpdateUserInput {
+  email: String!
+  firstname: String!
+  id: String!
+  lastname: String!
+  password: String!
+  phoneNumber: String!
+}
+
+type User {
+  """Unique Identifier"""
+  _id: String!
+  accountNumber: String!
+  createdAt: String!
+
+  """Unique Identifier"""
+  email: String!
+
+  """Unique Identifier"""
+  firstname: String!
+
+  """User lastname"""
+  lastname: String!
+  password: String!
+  phoneNumber: String!
+  updatedAt: String!
+}
+
+type UserAuthCreationDto {
+  """Account for newly created user"""
+  account: AccountResponse!
+
+  """Response object for user auth """
+  user: UserResponseDto!
+}
+
+input UserLoginDto {
+  email: String!
+  password: String!
+}
+
+type UserResponseDto {
+  """User id"""
+  _id: String!
+
+  """account"""
+  accountNumber: String!
+
+  """User creation date"""
+  createdAt: DateTime!
+
+  """email"""
+  email: String!
+
+  """firstname"""
+  firstname: String!
+
+  """lastname"""
+  lastname: String!
+
+  """phoneNumber"""
+  phoneNumber: String!
+}
