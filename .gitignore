@@ -2,6 +2,12 @@
 /dist
 /node_modules
 
+# envrionment files
+.env
+
+# other
+.idea
+
 # Logs
 logs
 *.log
