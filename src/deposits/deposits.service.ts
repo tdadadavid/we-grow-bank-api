@@ -86,7 +86,7 @@ export class DepositsService {
             ])
             .get(queryParams, url)
 
-        creditedAmount = exchangeRateResponse.data.info.rate * Math.abs(parseFloat(depositDto.amount));
+        creditedAmount = exchangeRateResponse.data.info.rate * parseFloat(depositDto.amount);
       }
 
       destinationAccount.balance += creditedAmount;
