@@ -35,7 +35,6 @@ export class DepositsService {
 
   async makeDeposit(depositDto: MakeDepositDto): Promise<ReturnValue> {
     this.logger.log(`Verifying source account ${depositDto.sourceAccount}`);
-    //TODO optimize this query call
     const sourceAccount = await this.accountRepo.findOne({
       accountNumber: depositDto.sourceAccount,
     });
@@ -73,13 +72,14 @@ export class DepositsService {
       const accountHaveSameCurrency =
           sourceAccount.currency === destinationAccount.currency;
 
-      let creditedAmount: number = Math.abs(+depositDto.amount)
+      let creditedAmount: number = +depositDto.amount;
 
       console.log("same currency?", accountHaveSameCurrency);
       if (!accountHaveSameCurrency){
 
         const queryParams = [destinationAccount.currency, sourceAccount.currency, creditedAmount];
         const url = new URL(`https://api.apilayer.com/exchangerates_data/convert?to=${destinationAccount.currency}&from=${sourceAccount.currency}&amount=${creditedAmount}`);
+
         const exchangeRateResponse: any = await this.httpService
             .setAuth([
               { apiKey: config.api.exchange_rates_api_key }
