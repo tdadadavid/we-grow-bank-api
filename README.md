@@ -13,6 +13,24 @@
 
 ***
 
+#### Transactions
+* TRANSACTION TYPES
+    * Deposit
+    * Withdrawal
+* USERS
+  * Account
+***
+* **Deposit**
+  * Only authenticated and authorized user's can perform these transactions.
+  * If balance is not sufficient it throws `InsufficientBalanceException`
+  * If the two accounts are not having the same currency, an external API is
+    used to get current exchange rates value for the two parties involved.
+* **Withdrawal**
+    * Only authenticated and authorized user's can perform these transactions.
+    * If balance is not sufficient it throws `InsufficientBalanceException`
+    * Users cannot withdraw negative amounts.
+***
+
 ### Project Setup
 ***
 
