@@ -3,7 +3,16 @@ import { Deposit } from "../entities/deposit.entity";
 import { GraphQLString } from "graphql/type";
 
 @ObjectType()
-export class DepositResponse extends PartialType<Deposit>(Deposit) {}
+export class DepositResponse {
+  @Field(() => GraphQLString)
+  readonly _id: string;
+
+  @Field(() => GraphQLString)
+  balance: string;
+
+  @Field(() => GraphQLString)
+  createdAt: string;
+}
 
 @ObjectType()
 export class DepositResponseDto {

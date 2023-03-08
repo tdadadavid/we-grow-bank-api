@@ -24,4 +24,8 @@ export const config = Object.freeze({
       lifeSpan: process.env.refreshTokenLifeSpan,
     },
   },
+  api: {
+    exchange_rates_api_key: process.env.EXCHANGE_RATES_API_KEY,
+    exchange_rates_api: process.env.EXCHANGE_RATES_API
+  }
 });

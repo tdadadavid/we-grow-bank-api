@@ -1,9 +1,7 @@
 import { ObjectType, Field, Int } from "@nestjs/graphql";
 import { GraphQLString } from "graphql/type";
 import { getModelForClass, Prop } from "@typegoose/typegoose";
-import { DocumentType } from "@typegoose/typegoose";
-import mongoose from "mongoose";
-import * as process from "process";
+
 
 @ObjectType()
 export class User {

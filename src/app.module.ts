@@ -14,6 +14,7 @@ import { TypegooseModule } from "nestjs-typegoose";
 import { AccountsModule } from './accounts/accounts.module';
 import { LoggerModule } from './logger/logger.module';
 import { WinstonModule } from "nest-winston";
+import { ExchangesRatesModule } from './exchanges-rates/exchanges-rates.module';
 import * as winston from "winston";
 
 @Module({
@@ -41,9 +42,10 @@ import * as winston from "winston";
     TransactionsModule,
     UsersModule,
     AuthModule,
-    TypegooseModule.forRoot(process.env.MONGOURI),
+    TypegooseModule.forRoot(process.env.APP_MONGO_URI),
     AccountsModule,
     LoggerModule,
+    ExchangesRatesModule,
   ],
   providers: [AppService, AppController],
 })

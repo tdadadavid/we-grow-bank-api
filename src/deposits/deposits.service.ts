@@ -1,4 +1,4 @@
-import { Injectable, Logger } from "@nestjs/common";
+import {HttpException, HttpStatus, Injectable, Logger} from "@nestjs/common";
 import { InjectModel } from "nestjs-typegoose";
 import DepositDAO, { Deposit } from "./entities/deposit.entity";
 import { ReturnModelType } from "@typegoose/typegoose";
@@ -16,6 +16,8 @@ import TransactionDAO, {
   TRANSACTION_TYPES,
   Transactions,
 } from "../transactions/entities/transactions.entity";
+import {HttpService} from "../commons/shared/http.service";
+import {config} from "../config";
 
 @Injectable()
 export class DepositsService {
@@ -26,9 +28,9 @@ export class DepositsService {
     private readonly depositRepo: ReturnModelType<typeof DepositDAO>,
     @InjectModel(Account)
     private readonly accountRepo: ReturnModelType<typeof AccountDAO>,
-
     @InjectModel(Transactions)
     private readonly transactionRepo: ReturnModelType<typeof TransactionDAO>,
+    private readonly httpService: HttpService
   ) {}
 
   async makeDeposit(depositDto: MakeDepositDto): Promise<ReturnValue> {
@@ -67,7 +69,27 @@ export class DepositsService {
     try {
       const prevBalance = destinationAccount.balance;
       // update the recipients account
-      destinationAccount.balance += +depositDto.amount;
+
+      const accountHaveSameCurrency =
+          sourceAccount.currency === destinationAccount.currency;
+
+      let creditedAmount: number = Math.abs(+depositDto.amount)
+
+      console.log("same currency?", accountHaveSameCurrency);
+      if (!accountHaveSameCurrency){
+
+        const queryParams = [destinationAccount.currency, sourceAccount.currency, creditedAmount];
+        const url = new URL(`https://api.apilayer.com/exchangerates_data/convert?to=${destinationAccount.currency}&from=${sourceAccount.currency}&amount=${creditedAmount}`);
+        const exchangeRateResponse: any = await this.httpService
+            .setAuth([
+              { apiKey: config.api.exchange_rates_api_key }
+            ])
+            .get(queryParams, url)
+
+        creditedAmount = exchangeRateResponse.data.info.rate * Math.abs(parseFloat(depositDto.amount));
+      }
+
+      destinationAccount.balance += creditedAmount;
       destinationAccount.update().session(session);
       this.logger.log("Destination wallet credited");
 
@@ -85,12 +107,9 @@ export class DepositsService {
       await this.depositRepo.create(deposit);
       this.logger.log("Deposit created");
 
-      const accountHaveSameCurrency =
-        sourceAccount.currency === destinationAccount.currency;
-
       this.logger.log("Creating transaction for deposit");
 
-      const transactions: Transactions = await Transactions.builder()
+      const transactions: Transactions = Transactions.builder()
         .setAmountInvolved(depositDto.amount)
         .setCurrentBalance(+sourceAccount.balance)
         .setPrevBalance(+prevBalance)
@@ -106,10 +125,9 @@ export class DepositsService {
         this.logger.log("Database transaction closed");
       });
 
-      console.log(sourceAccount);
       return {
         message: "Deposit made successfully",
-        data: sourceAccount,
+        data: destinationAccount,
       };
     } catch (exception: any) {
       await session.abortTransaction();

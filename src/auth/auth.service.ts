@@ -18,7 +18,6 @@ export class AuthService {
   constructor(
     @InjectModel(User)
     private readonly userRepository: ReturnModelType<typeof UserDAO>,
-
     @InjectModel(Account)
     private readonly accountRepo: ReturnModelType<typeof AccountDAO>,
     private readonly passwordService: PasswordService,
@@ -75,7 +74,6 @@ export class AuthService {
 
   async login(userLoginDto: UserLoginDto): Promise<ReturnValue> {
     const { email, password } = userLoginDto;
-
     // check for the user.
     const user = await this.userRepository.findOne({ email });
     if (!user) throw new UnauthorizedException("Invalid credentials");

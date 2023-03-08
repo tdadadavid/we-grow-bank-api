@@ -6,6 +6,8 @@ services:
     container_name: mongo-service
     restart: always
     command: [ --auth ]
+    networks:
+      - we_grow_bank_network
     environment:
         MONGO_INITDB_ROOT_USERNAME: root
         MONGO_INITDB_ROOT_PASSWORD: rootpassword
@@ -21,26 +23,33 @@ services:
     depends_on:
       - mongoDb
     ports:
-      - 8081:8081
+      - "8081:8081"
     environment:
       ME_CONFIG_MONGODB_ADMINUSERNAME: root
       ME_CONFIG_MONGODB_ADMINPASSWORD: rootpassword
       ME_CONFIG_MONGODB_URL: mongodb://root:rootpassword@mongoDb:27017/
+    networks:
+      - we_grow_bank_network
 
 # The application and API
   bankApi:
     build: '.'
     container_name: we-grow-bank-service
     restart: always
-    env_file:
-      - ./.env
+    environment:
+      - MONGO_APP_URI="mongodb://root:rootpassword@mongoDb:27017/"
+    networks:
+      - we_grow_bank_network
     ports:
-      - 3000:3000
+      - "3000:3000"
     depends_on:
       - mongoDb
     volumes:
       - './:/app'
       - '/app/node_modules'
+
+networks:
+  we_grow_bank_network:
 
 volumes:
   mongodb_data_container:

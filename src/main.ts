@@ -1,18 +1,16 @@
 import { NestFactory } from "@nestjs/core";
 import { AppModule } from "./app.module";
-import { WeGrowBankLogger } from "./logger/logger.service";
-import { connection } from "./config";
 import { TypegooseModule } from "nestjs-typegoose";
 import * as process from "process";
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, {
-  });
+  const app = await NestFactory.create(AppModule);
 
-  TypegooseModule.forRoot(process.env.MONGOURI);
+  TypegooseModule.forRoot(process.env.APP_MONGO_URI);
   // app.useLogger(app.get(WeGrowBankLogger));
-  await app.listen(3000);
+  await app.listen(process.env.PORT || 5000);
+  return process.env.PORT;
 }
-bootstrap();
+bootstrap().then();
 
 //TODO: work on the error handling.

@@ -1,7 +1,6 @@
 import { Field, GraphQLISODateTime, ObjectType } from "@nestjs/graphql";
 import { GraphQLString } from "graphql/type";
 import { getModelForClass, Prop, Ref } from "@typegoose/typegoose";
-import { SchemaTypes } from "mongoose";
 import { User } from "../../users/entities/user.entity";
 
 @ObjectType()
