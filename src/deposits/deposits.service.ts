@@ -74,7 +74,6 @@ export class DepositsService {
 
       let creditedAmount: number = +depositDto.amount;
 
-      console.log("same currency?", accountHaveSameCurrency);
       if (!accountHaveSameCurrency){
 
         const queryParams = [destinationAccount.currency, sourceAccount.currency, creditedAmount];
